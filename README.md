@@ -4,7 +4,9 @@
 
 ## 开发环境
 ### 1. node环境配置
-+ #### 首先下载安装nvm   https://github.com/coreybutler/nvm-windows/releases
+nvm（Node Version Manager）是一个用来管理node版本的工具。我们之所以需要使用node，是因为我们需要使用node中的npm(Node Package Manager)，使用npm的目的是为了能够方便的管理一些前端开发的包！
++ #### 首先下载安装nvm
+```https://github.com/coreybutler/nvm-windows/releases```
 + #### 打开命令行，切换至项目目录
 ```
 nvm install 10.16.0
@@ -24,4 +26,7 @@ npm install sass-loader@7.0.3 --save-dev
 ```
 
 ### 4. 运行
-在命令行进入到项目路径，运行```npm run serve```即可
+在命令行进入到项目路径，运行下面的命令即可
+```
+npm run serve
+```
