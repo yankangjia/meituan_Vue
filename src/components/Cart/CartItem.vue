@@ -47,7 +47,7 @@
     <div class="cart-item-header">
       <van-checkbox v-model="checked" checked-color="#f8c74e"></van-checkbox>
       <div class="header-info">
-        <div class="merchant-name">炸串联盟拌饭（西客站店）</div>
+        <div class="merchant-name">{{ merchant.name }}</div>
         <!-- 优惠 -->
         <ul class="discounts-group">
           <li>30 减 5</li>
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="cart-item-body">
-      <cart-item-goods v-for="goods of merchant" :key="goods.id" :goods="goods"></cart-item-goods>
+      <cart-item-goods v-for="goods of merchant.goods_list" :key="goods.id" :goods="goods"></cart-item-goods>
     </div>
     <div class="cart-item-footer"></div>
   </div>
@@ -84,9 +84,6 @@ export default {
   components: {
     [Checkbox.name]: Checkbox,
     [CartItemGoods.name]: CartItemGoods
-  },
-  mounted(){
-    console.log(this.merchant)
   }
 }
 </script>

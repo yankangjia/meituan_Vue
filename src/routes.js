@@ -7,13 +7,14 @@ import Merchant from "./components/Merchant/Merchant"
 import SubmitOrder from "./components/SubmitOrder.vue"
 import MTAddressList from "./components/MTAddressList"
 import MTAddressEdit from "./components/MTAddressEdit"
-import Order from "./components/Order/Order"
+import Orders from "./components/Order/Orders"
 import auth from "./utils/auth"
 import Cart from "./components/Cart/Cart"
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
+  // mode: 'history',     // 去掉url中的#
   routes: [
     {
       path: '/login',
@@ -26,9 +27,9 @@ const router = new VueRouter({
       name: 'home'
     },
     {
-      path: '/order',
-      component: Order,
-      name: 'order',
+      path: '/orders',
+      component: Orders,
+      name: 'orders',
       // 额外信息
       meta:{
         // 限制登录后才能访问

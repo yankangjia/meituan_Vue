@@ -172,11 +172,12 @@
       show(){
         if(this.goodsList.length > 0){
           // 将商品信息同步到全局购物车
-          const data = {
-            merchant_id: this.merchant_id,
-            categories: this.categories
-          }
-          this.$store.commit('setMerchantCart',data)
+          // const data = {
+          //   merchant_id: this.merchant_id,
+          //   categories: this.categories
+          // }
+          // window.console.log(this.categories)
+          // this.$store.commit('setMerchantCart',data)
           
           return  true
         } else{
@@ -186,15 +187,33 @@
         }
       },
       goodsList(){
-        let goodsList = []
+        let cart_categories = []
+        let goods_list = []
         for(let category of this.categories){
+          let cart_category = JSON.parse(JSON.stringify(category))
+          cart_category.goods_list = []
           for(let goods of category.goods_list){
             if(goods.count > 0){
-              goodsList.push(goods)
+              cart_category.goods_list.push(goods)
+              goods_list.push(goods)
             }
           }
+          if(cart_category.goods_list.length > 0){
+            cart_categories.push(cart_category)
+          }
         }
-        return goodsList
+        // 将商品信息同步到全局购物车
+        if(cart_categories.length > 0){
+          const data = {
+            merchant_id: this.merchant_id,
+            categories: cart_categories
+          }
+          this.$store.commit('setMerchantCart',data)
+        } else{
+          this.$store.commit('clearCart',this.merchant_id)
+        }
+
+        return goods_list
       },
       totalPrice(){
         let total = 0

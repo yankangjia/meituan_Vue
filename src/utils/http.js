@@ -2,8 +2,8 @@ import axios from "axios"
 import auth from "./auth"
 import router from "../routes"
 
-const BASE_URL = 'http://127.0.0.1:8000'
-// const BASE_URL = 'http://www.ykjzone.com'
+// const BASE_URL = 'http://127.0.0.1:8000'
+const BASE_URL = 'http://www.ykjzone.com:8000'
 
 
 class Http{
@@ -15,7 +15,7 @@ class Http{
     this.http.interceptors.request.use(config => {
       const token = auth.token
       if(token){
-        config.headers.common.authorization = 'jwt ' + token
+        config.headers.common.authorization = 'jwt ' + token 
       }
       return config
     })
@@ -37,6 +37,11 @@ class Http{
     return this.http.post(url,data)
   }
 
+  logout(){
+    const url = '/logout'
+    return this.http.post(url)
+  }
+
   getMerchant(merchant_id){
     const url = '/merchant/' + merchant_id
     return this.http.get(url)
@@ -44,6 +49,11 @@ class Http{
 
   getMerchants(page){
     const url = '/merchant?page=' + page
+    return this.http.get(url)
+  }
+
+  getMerchantsByIds(merchant_id_list){
+    const url = '/get_merchant_by_ids?merchant_id_list=' + JSON.stringify(merchant_id_list)
     return this.http.get(url)
   }
 
@@ -78,18 +88,17 @@ class Http{
   }
 
   submitorder(data){
-    const url = '/order'
+    const url = '/submitorder'
     return this.http.post(url,data)
   }
 
   getOrders(){
-    const url = '/order/own'
+    const url = '/order'
     return this.http.get(url)
   }
 
   getGoodses(goods_id_list){
     const url = '/goods_list?goods_id_list=' + JSON.stringify(goods_id_list)  
-    console.log(url)  
     return this.http.get(url)
   }
 }

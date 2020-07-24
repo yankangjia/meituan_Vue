@@ -114,7 +114,10 @@
     mounted(){
       // 获取商品信息
       this.merchant_id = this.$route.query.merchant_id
-      this.goodsList = this.$store.getters.goods_list(this.merchant_id)
+      let result = this.$store.getters.goods_list(this.merchant_id)
+      this.goodsList = result.cart_goods_list
+
+
       // 设置地址
       const selectedAddress = this.$store.state.selectedAddress
       if(selectedAddress){
@@ -129,21 +132,24 @@
     methods: {
       // 提交订单
       onSubmit(){
-        const goods_id_list = []
+        const goods_list = []   // [{goods_id:xxxx, count:xxx}, {goods_id:xxxx, count:xxx}, ......]
         for(let goods of this.goodsList){
-          goods_id_list.push(goods.id)
+          goods_list.push({goods_id:goods.id, count:goods.count})
         }
         const data = {
           address_id: this.address.id,
-          goods_id_list: goods_id_list,
-          // merchant_id: 
+          goods_list: goods_list,
+          merchant_id: this.merchant_id
         }
         this.$http.submitorder(data).then(res => {
+          // 清空购物车
+          console.log(this.merchant_id)
+          this.$store.commit('clearCart',this.merchant_id)
           // 创建好订单后请求alipay
           const pay_url = res.data.pay_url
           window.location = pay_url
-        })
-      }
+        }) 
+      } 
     }
   }
 </script>

@@ -4,7 +4,7 @@
     <router-view></router-view>
     <van-tabbar v-model="active" v-if="showTabBar">
       <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
-      <van-tabbar-item icon="orders-o" to="/order">订单</van-tabbar-item>
+      <van-tabbar-item icon="orders-o" to="/orders">订单</van-tabbar-item>
       <van-tabbar-item icon="user-o" to="/mine">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -22,18 +22,27 @@ export default {
     [CartGlobal.name]: CartGlobal
   },
   data: function(){
-    return {
-      active: 0
-    }
+    return {}
   },
   computed: {
     showTabBar(){
-      const allowShow = ['home','order','mine']
+      const allowShow = ['home','orders','mine']
       const name = this.$route.name
       if(allowShow.indexOf(name) >=0 ){
         return true
       } else{
         return false
+      }
+    },
+    active(){
+      // 根据路径设置底部标签栏活跃状态    0 home
+      const allowShow = ['home','orders','mine']
+      const name = this.$route.name
+      const index = allowShow.indexOf(name)
+      if( index >=0 ){
+        return index
+      } else{
+        return 0
       }
     },
     showCartGlobal(){

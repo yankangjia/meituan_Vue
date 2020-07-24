@@ -38,14 +38,14 @@
       width: 80px;
       height: 100%;
       text-align: center;
-      // background-color: pink;
       overflow: hidden;
       .category-list{
         li{
-          height: 50px;
-          line-height: 50px;
+          display: block;
+          padding: 15px 0;
+          background-color: #eee;
           &.active{
-            background-color: #ddd;
+            background-color: #fff;
           }
         }
       }
@@ -72,12 +72,17 @@
           .goods-info{
             flex: 1;
             margin-left: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: space-around;
             .goods-name{
               font-size: 16px;
               font-weight: 700;
+              height: 24px;
+              width: 200px;
+              overflow:hidden;		//把超出的内容进行隐藏；
+              white-space:nowrap;		//设置内容不换行；
+              text-overflow:ellipsis;		//设置超出内容为省略号
             }
             .goods-info-bottom{
               display: flex;
@@ -113,7 +118,7 @@
         </div>
       </div>
     </div>
-    <van-tabs class="tab-group" v-model="active">
+    <van-tabs class="tab-group" v-model="active" animated swipeable>
       <!-- 点菜页面 -->
       <van-tab title="点菜">
         <div class="menu-group" :style="menuHeightStyle">
@@ -219,7 +224,7 @@ export default {
         click: true,  // 允许点击
       })
 
-      // 设置商品列表为滚动x 
+      // 设置商品列表为滚动
       this.goodsScroll = new BScroll(this.$refs.goods,{
         scrollY: true,
         click: true,
@@ -283,9 +288,9 @@ export default {
 
         // 设置分类和商品height
         let goodsList = document.getElementsByClassName("goods-list")[0]
-        goodsList.style.height = goodsList.offsetHeight + 70 + "px"
+        goodsList.style.height = (goodsList.offsetHeight + 70) / 37.5 + "rem"
         let categoryList = document.getElementsByClassName("category-list")[0]
-        categoryList.style.height = categoryList.offsetHeight + 70 + "px"
+        categoryList.style.height = (categoryList.offsetHeight + 70) / 37.5 + "rem"
 
         this.categoryScroll.refresh()
         this.goodsScroll.refresh()

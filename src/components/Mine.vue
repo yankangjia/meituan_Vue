@@ -27,14 +27,14 @@
   <div class="mine-container">
     <div class="mine-header">
       <div class="avatar-group"></div>
-      <div class="username">燕康佳</div>
+      <div class="username">{{ user.username }}</div>
     </div>
     <van-cell-group>
       <van-cell title="我的红包" is-link></van-cell>
       <van-cell title="收货地址" is-link></van-cell>
       <van-cell title="常见问题" is-link></van-cell>
       <van-cell title="协议与说明" is-link></van-cell>
-      <van-cell title="退出登录" is-link></van-cell>
+      <van-cell title="退出登录" is-link @click="logout"></van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -44,11 +44,22 @@
   export default {
     name: "Mine",
     data: function(){
-      return {}
+      return {
+        user: {}
+      }
     },
     components: {
       [Cell.name]: Cell,
       [CellGroup.name]: CellGroup
+    },
+    methods: {
+      logout: function(){
+        this.$auth.clearUserToken()
+        this.$router.push("/")
+      }
+    },
+    mounted(){
+      this.user = this.$auth.user
     }
   }
 </script>

@@ -66,7 +66,7 @@
         }
       },
       submitButtonDisabled(){
-        if(!this.telephone.match(/^1[3456789]\d{9}$/) || !this.smscode.match(/^\d{4}$/)){
+        if(!this.telephone.match(/^1[3456789]\d{9}$/) || !this.smscode.match(/^\d{6}$/)){
           return true
         } else{
           return false
@@ -76,8 +76,12 @@
     methods: {
       // 发送短信验证码
       sendSmsCode(){
-        this.$http.getSmsCode(this.telephone).then(() => {
-          Toast("验证码发送成功")
+        this.$http.getSmsCode(this.telephone).then(res => {
+          Toast("验证码发送成功");
+          // 将验证码设置到输入框里
+          var sms_code = res.data.sms_code;
+          this.smscode = sms_code;
+          // 1分钟后才能再次发送
           this.timeout = 60
           let interval = setInterval(() => {
             this.timeout--

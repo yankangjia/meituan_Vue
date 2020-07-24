@@ -48,7 +48,16 @@ const store = new Vuex.Store({
           let category = merchant[category_id]
           if(category.hasOwnProperty(goods.id)){
             category[goods.id].count--
+            if(category[goods.id].count <= 0){
+              delete category[goods.id]
+            }
           }
+          if( Object.getOwnPropertyNames( merchant[category_id] ).length <= 0 ){
+            delete merchant[category_id]
+          }
+        }
+        if( Object.getOwnPropertyNames( state.cart[merchant_id] ).length <= 0 ){
+          delete state.cart[merchant_id]
         }
       }
     },
@@ -56,12 +65,20 @@ const store = new Vuex.Store({
     setMerchantCart(state,data){
       const merchant_id = data.merchant_id
       const categories = data.categories
-      state.cart[merchant_id] = categories
+      if(categories.length > 0){
+        state.cart[merchant_id] = categories
+      } else{
+        delete state.cart[merchant_id]
+      }
     },
     updateMerchantCart(state,data){
       const merchant_id = data.merchant_id
       const categories = data.categories
-      state.cart[merchant_id] = categories
+      if(categories.length > 0){
+        state.cart[merchant_id] = categories
+      } else{
+        delete state.cart[merchant_id]
+      }
     },
     clearCart(state,merchant_id){
       if(state.cart.hasOwnProperty(merchant_id)){
@@ -121,14 +138,16 @@ const store = new Vuex.Store({
         cart_merchants_goods_id[merchant_id] = result.cart_goods_id_list
         cart_goods_id = cart_goods_id.concat(result.cart_goods_id_list)
       }
-      console.log('================')
-      console.log(cart_merchants)
       return {
         cart_merchants,
         cart_merchants_goods_id,
         cart_goods_id
       }
     },
+    // 获取购物车中商家数量
+    merchant_count: (state) => () => {
+      return Object.getOwnPropertyNames( state.cart ).length - 1    // Vue列表末尾中会包含__ob__元素
+    }
   }
 })
 

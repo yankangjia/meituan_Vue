@@ -32,38 +32,45 @@
     margin-top:10px;
   }
 }
+.filter-group{
+  overflow: hidden;
+    h2{
+      margin: 15px 10px 10px;
+    }
+}
 .main-group{
   overflow: hidden;
-  h2{
-    margin: 20px 10px 10px;
-  }
   .merchant-list{
     padding: 0 5px;
-    .merchant-item{
-      display: flex;
-      padding: 10px;
-      .logo{
-        width: 80px;
-        height: 60px;
-        margin: 7px 0;
-      }
-      .merchant-info{
-        margin-left: 10px;
-        .merchant-name{
-          font-size: 20px;
-          font-weight: 700;
-          color: #000;
+    a{
+      display: block;
+      overflow: hidden;
+      .merchant-item{
+        display: flex;
+        padding: 10px;
+        .logo{
+          width: 80px;
+          height: 60px;
+          margin: 7px 0;
         }
-        .rate-group{
-          margin-top: 4px;
-        }
-        .tag-group{
-          margin-top: 4px;
-          span{
-            font-size: 12px;
-            margin-right: 4px;
+        .merchant-info{
+          margin-left: 10px;
+          .merchant-name{
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
           }
-          
+          .rate-group{
+            margin-top: 4px;
+          }
+          .tag-group{
+            margin-top: 4px;
+            span{
+              font-size: 12px;
+              margin-right: 4px;
+            }
+            
+          }
         }
       }
     }
@@ -83,32 +90,32 @@
         <van-search placeholder="请输入搜索关键词" v-model="keyword" @input="onInput" :clearable="true" @clear="onClear"/>
       </div>
     </div>
+    <div class="filter-group">
+      <h2>推荐商家</h2>
+      <van-dropdown-menu>
+        <van-dropdown-item v-model="sort" :options="sorts" />
+        <div class="van-dropdown-menu__item">距离最近</div>
+        <div class="van-dropdown-menu__item">品质联盟</div>
+        <div class="van-dropdown-menu__item">筛选<i class="iconfont icon-funnel"></i></div>
+      </van-dropdown-menu>
+    </div>
     <div class="main-group" ref="main" :style="mainStyle">
-      <div>
-        <h2>推荐商家</h2>
-        <van-dropdown-menu>
-          <van-dropdown-item v-model="sort" :options="sorts" />
-          <div class="van-dropdown-menu__item">距离最近</div>
-          <div class="van-dropdown-menu__item">品质联盟</div>
-          <div class="van-dropdown-menu__item">筛选<i class="iconfont icon-funnel"></i></div>
-        </van-dropdown-menu>
-        <div class="merchant-list">
-          <router-link :to="'/merchant/' + merchant.id" v-for="merchant in display_merchants" :key="merchant.id">
-            <div class="merchant-item">
-              <img class="logo" :src="merchant.logo" alt="">
-              <div class="merchant-info">
-                <div class="merchant-name">{{merchant.name}}</div>
-                <div class="rate-group">
-                  <van-rate v-model="rate" size="17px" />
-                </div>
-                <div class="tag-group">
-                  <van-tag plain>美团专送</van-tag>
-                  <van-tag plain>家常菜</van-tag>
-                </div>
+      <div class="merchant-list">
+        <router-link :to="'/merchant/' + merchant.id" v-for="merchant in display_merchants" :key="merchant.id">
+          <div class="merchant-item">
+            <img class="logo" :src="merchant.logo" alt="">
+            <div class="merchant-info">
+              <div class="merchant-name">{{merchant.name}}</div>
+              <div class="rate-group">
+                <van-rate v-model="rate" size="17px" />
+              </div>
+              <div class="tag-group">
+                <van-tag plain>美团专送</van-tag>
+                <van-tag plain>家常菜</van-tag>
               </div>
             </div>
-          </router-link>
-        </div>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -147,7 +154,7 @@ export default {
   },
   computed: {
     mainStyle(){
-      const leftHeight = 95 + 50
+      const leftHeight = 95 + 99 + 50
       const phoneHeight = 667
       const mainHeight = (phoneHeight - leftHeight)/37.5 + 'rem'
       return {
@@ -191,7 +198,7 @@ export default {
     },
     // 防抖函数
     debounce(callback){
-      let timer = null  //timer始终是同一个
+      let timer = null  // timer始终是同一个
       return function(value){
         clearTimeout(timer)
         timer = setTimeout(() => {
@@ -200,6 +207,10 @@ export default {
       }
     },
     onInput(value){   // 搜索   value：输入框当前值
+      if(value == ''){
+        this.searchResults = []
+        return
+      }
       if(!this.searchFunc){
         this.searchFunc = this.debounce((valueArg) => {
           // 请求

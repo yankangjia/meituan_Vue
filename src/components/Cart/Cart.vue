@@ -1,6 +1,10 @@
 <style lang="scss" scoped>
 .cart-container{
-    background-color: rgb(230,230,230);
+    background-color: rgb(235,235,235);
+    height: 667px;
+}
+.mt-nav-bar{
+  background: rgb(248,248,248);
 }
 </style>
 
@@ -69,12 +73,24 @@ export default {
           }
         }
       })
+      // 获取商家信息
+      let merchant_id_list = []
+      for(let merchant_id in cart_merchants){
+        merchant_id_list.push(merchant_id)
+      }
+      this.$http.getMerchantsByIds(merchant_id_list).then(res => {
+        let merchants = res.data
+        for(let merchant of merchants){
+          merchant.goods_list = cart_merchants[merchant.id]   // Object
+        }
+        // [{id:31, goods_id:{2011:{name:啤酒, ...}, ...}, ... }, ...]
+        this.cart_merchants = merchants
+      })
     }
-    this.cart_merchants = cart_merchants
   },
   methods: {
     getFirstValue(merchant){
-      for(const goods of Object.values(merchant)){
+      for(const goods of Object.values(merchant.goods_list)){
         return goods.id
       }
     }
