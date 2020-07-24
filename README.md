@@ -1,24 +1,3 @@
-# meituan
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+####美团外卖项目
+##使用Vue开发开发的移动端美团外卖平台
+[点击此处预览](http://www.ykjzone.com:8000)
